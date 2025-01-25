@@ -18,13 +18,12 @@ public class AccountController {
     private final AccountRepository accountRepository;
 
     @GetMapping("/me")
-    public ApiResponse<Object> save() {
+    public ApiResponse<AccountMeResponse> save() {
         var response = AccountMeResponse.builder()
                 .name("김영희")
                 .email("younghee@example.com")
                 .createdAt(LocalDateTime.now())
                 .build();
         return ApiResponse.OK(response);
-//        return ApiResponse.ERROR(UserErrorCode.USER_NOT_FOUND, "김영희 Not Found");
     }
 }

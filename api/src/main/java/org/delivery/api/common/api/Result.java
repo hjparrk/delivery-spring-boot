@@ -32,7 +32,7 @@ public class Result {
                 .success(false)
                 .status(errorCodeInterface.getErrorCode())
                 .message(errorCodeInterface.getMessage())
-                .description("Error")
+                .description("Error Occurred")
                 .build();
     }
 
