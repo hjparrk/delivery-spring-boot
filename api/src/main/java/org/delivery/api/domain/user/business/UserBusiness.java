@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.delivery.api.common.annotation.Business;
 import org.delivery.api.common.error.ErrorCode;
 import org.delivery.api.common.exception.ApiException;
+import org.delivery.api.domain.user.controller.model.UserLoginRequest;
 import org.delivery.api.domain.user.controller.model.UserRegisterRequest;
 import org.delivery.api.domain.user.controller.model.UserResponse;
 import org.delivery.api.domain.user.converter.UserConverter;
@@ -26,7 +27,6 @@ public class UserBusiness {
      * @throws NullPointerException if the request is null
      */
     public UserResponse register(UserRegisterRequest request) {
-
         return Optional.ofNullable(request)
                 .map(userConverter::toEntity)
                 .map(userService::register)
@@ -34,5 +34,11 @@ public class UserBusiness {
                 .orElseThrow(() -> new ApiException(
                         ErrorCode.NULL_POINT, "UserRegisterRequest cannot be null")
                 );
+    }
+
+    public UserResponse login(UserLoginRequest request) {
+        var user = userService.login(request);
+        // TODO - Generate JWT Token
+        return userConverter.toResponse(user);
     }
 }

@@ -5,6 +5,7 @@ import org.delivery.api.common.api.Api;
 import org.delivery.api.common.error.ErrorCode;
 import org.delivery.api.common.exception.ApiException;
 import org.delivery.api.domain.user.business.UserBusiness;
+import org.delivery.api.domain.user.controller.model.UserLoginRequest;
 import org.delivery.api.domain.user.controller.model.UserRegisterRequest;
 import org.delivery.api.domain.user.controller.model.UserResponse;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,14 +26,26 @@ public class PublicUserController {
     @PostMapping("/register")
     public Api<UserResponse> register(
             @Valid
-            @RequestBody
-            Api<UserRegisterRequest> request
+            @RequestBody Api<UserRegisterRequest> request
     ) {
         return Optional.ofNullable(request.getBody())
                 .map(userBusiness::register)
                 .map(Api::OK)
                 .orElseThrow(() -> new ApiException(
                         ErrorCode.NULL_POINT, "UserRegisterRequest cannot be null")
+                );
+    }
+
+    @PostMapping("/login")
+    public Api<UserResponse> login(
+            @Valid
+            @RequestBody Api<UserLoginRequest> request
+    ) {
+        return Optional.ofNullable(request.getBody())
+                .map(userBusiness::login)
+                .map(Api::OK)
+                .orElseThrow(() -> new ApiException(
+                        ErrorCode.NULL_POINT, "UserLoginRequest cannot be null")
                 );
     }
 }

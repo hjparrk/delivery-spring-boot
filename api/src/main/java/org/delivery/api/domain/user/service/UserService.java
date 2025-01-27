@@ -2,7 +2,9 @@ package org.delivery.api.domain.user.service;
 
 import lombok.RequiredArgsConstructor;
 import org.delivery.api.common.error.ErrorCode;
+import org.delivery.api.common.error.UserErrorCode;
 import org.delivery.api.common.exception.ApiException;
+import org.delivery.api.domain.user.controller.model.UserLoginRequest;
 import org.delivery.db.user.User;
 import org.delivery.db.user.UserRepository;
 import org.delivery.db.user.UserStatus;
@@ -24,4 +26,16 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public User login(UserLoginRequest request) {
+        var user = getUserWithThrow(request.getEmail(), request.getPassword());
+        return user;
+    }
+
+    public User getUserWithThrow(String email, String password) {
+        return userRepository.findFirstByEmailAndPasswordAndStatusOrderByIdDesc(
+                email,
+                password,
+                UserStatus.REGISTERED
+                ).orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
+    }
 }
