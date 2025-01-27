@@ -43,4 +43,9 @@ public class UserBusiness {
         var user = userService.login(request);
         return tokenBusiness.issueToken(user);
     }
+
+    public UserResponse me(Long userId) {
+        var user = userService.getUserWithThrow(userId);
+        return userConverter.toResponse(user);
+    }
 }

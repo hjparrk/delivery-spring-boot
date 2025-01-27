@@ -12,7 +12,8 @@ import org.springframework.http.HttpStatus;
 public enum TokenErrorCode implements ErrorCodeInterface{
     TOKEN_EXCEPTION(HttpStatus.UNAUTHORIZED.value(), 1100, "Unknown Token Error"),
     INVALID_TOKEN(HttpStatus.UNAUTHORIZED.value(), 1101, "Invalid Token"),
-    EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED.value(), 1102, "Expired Token")
+    EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED.value(), 1102, "Expired Token"),
+    AUTH_TOKEN_NOT_FOUND(HttpStatus.UNAUTHORIZED.value(), 1103, "Token Not Found")
     ;
 
     private final Integer httpStatusCode;
