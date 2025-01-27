@@ -14,8 +14,8 @@ public class WebConfig implements WebMvcConfigurer {
 
     private final AuthorizationInterceptor authorizationInterceptor;
 
-    private List<String> OPEN_API = List.of(
-            "/open-api/**"
+    private List<String> PUBLIC_API = List.of(
+            "/api/public/**"
     );
     private List<String> DEFAULT_EXCLUDE = List.of(
             "/",
@@ -31,7 +31,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authorizationInterceptor)
-                .excludePathPatterns(OPEN_API)
+                .excludePathPatterns(PUBLIC_API)
                 .excludePathPatterns(DEFAULT_EXCLUDE)
                 .excludePathPatterns(SWAGGER);
     }
