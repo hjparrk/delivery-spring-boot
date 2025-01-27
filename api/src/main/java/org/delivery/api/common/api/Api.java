@@ -12,40 +12,40 @@ import javax.validation.Valid;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ApiResponse<T> {
+public class Api<T> {
 
     private Result result;
 
     @Valid
     private T body;
 
-    public static <T> ApiResponse<T> OK(T data) {
-        return ApiResponse.<T>builder()
+    public static <T> Api<T> OK(T data) {
+        return Api.<T>builder()
                 .result(Result.OK())
                 .body(data)
                 .build();
     }
 
-    public static ApiResponse<Object> ERROR(Result result) {
-        return ApiResponse.<Object>builder()
+    public static Api<Object> ERROR(Result result) {
+        return Api.<Object>builder()
                 .result(result)
                 .build();
     }
 
-    public static ApiResponse<Object> ERROR(ErrorCodeInterface errorCodeInterface) {
-        return ApiResponse.<Object>builder()
+    public static Api<Object> ERROR(ErrorCodeInterface errorCodeInterface) {
+        return Api.<Object>builder()
                 .result(Result.ERROR(errorCodeInterface))
                 .build();
     }
 
-    public static ApiResponse<Object> ERROR(ErrorCodeInterface errorCodeInterface, String message) {
-        return ApiResponse.<Object>builder()
+    public static Api<Object> ERROR(ErrorCodeInterface errorCodeInterface, String message) {
+        return Api.<Object>builder()
                 .result(Result.ERROR(errorCodeInterface, message))
                 .build();
     }
 
-    public static ApiResponse<Object> ERROR(ErrorCodeInterface errorCodeInterface, Throwable tx) {
-        return ApiResponse.<Object>builder()
+    public static Api<Object> ERROR(ErrorCodeInterface errorCodeInterface, Throwable tx) {
+        return Api.<Object>builder()
                 .result(Result.ERROR(errorCodeInterface, tx))
                 .build();
     }
