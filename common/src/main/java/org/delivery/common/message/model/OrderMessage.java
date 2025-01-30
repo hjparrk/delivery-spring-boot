@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserOrderMessage {
+public class OrderMessage {
 
     private Long orderId;
 }

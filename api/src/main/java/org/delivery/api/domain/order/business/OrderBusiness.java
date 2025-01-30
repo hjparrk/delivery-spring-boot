@@ -6,6 +6,7 @@ import org.delivery.api.domain.order.controller.model.OrderDetailsResponse;
 import org.delivery.api.domain.order.controller.model.OrderRequest;
 import org.delivery.api.domain.order.controller.model.OrderResponse;
 import org.delivery.api.domain.order.converter.OrderConverter;
+import org.delivery.api.domain.order.producer.OrderProducer;
 import org.delivery.api.domain.order.service.OrderService;
 import org.delivery.api.domain.ordermenu.converter.OrderMenuConverter;
 import org.delivery.api.domain.ordermenu.service.OrderMenuService;
@@ -35,6 +36,8 @@ public class OrderBusiness {
     private final StoreMenuService storeMenuService;
     private final StoreMenuConverter storeMenuConverter;
 
+    private final OrderProducer orderProducer;
+
     public OrderResponse order(UserObj user, OrderRequest request) {
         // Get StoreMenu entities with storeMenuIds
         var storeMenus = request.getStoreMenuIds().stream()
@@ -52,6 +55,9 @@ public class OrderBusiness {
 
         // Save OrderMenu entities
         orderMenus.forEach(orderMenuService::order);
+
+        // (Async) Alert to the store
+        orderProducer.sendOrder(savedOrder);
 
         // Return response
         return orderConverter.toResponse(savedOrder);
