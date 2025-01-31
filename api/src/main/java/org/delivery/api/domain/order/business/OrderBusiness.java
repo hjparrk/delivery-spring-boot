@@ -40,12 +40,13 @@ public class OrderBusiness {
 
     public OrderResponse order(UserObj user, OrderRequest request) {
         // Get StoreMenu entities with storeMenuIds
+        var storeId = request.getStoreId();
         var storeMenus = request.getStoreMenuIds().stream()
                 .map(storeMenuService::getStoreMenuWithThrow)
                 .collect(Collectors.toList());
 
         // Create and save Order entity
-        var order = orderConverter.toEntity(user, storeMenus);
+        var order = orderConverter.toEntity(user, storeId, storeMenus);
         var savedOrder = orderService.order(order);
 
         // Create OrderMenu entities

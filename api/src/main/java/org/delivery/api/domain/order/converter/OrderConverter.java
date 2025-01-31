@@ -12,13 +12,14 @@ import java.util.List;
 @Converter
 public class OrderConverter {
 
-    public Order toEntity(UserObj user, List<StoreMenu> storeMenus) {
+    public Order toEntity(UserObj user, Long storeId, List<StoreMenu> storeMenus) {
         var totalPrice = storeMenus.stream()
                 .map(StoreMenu::getPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         return Order.builder()
                 .userId(user.getId())
+                .storeId(storeId)
                 .price(totalPrice)
                 .build();
     }

@@ -13,5 +13,8 @@ import java.util.List;
 public class OrderRequest {
 
     @NotNull
+    private Long storeId;
+
+    @NotNull
     private List<Long> storeMenuIds;
 }

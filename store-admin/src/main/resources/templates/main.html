@@ -1,11 +1,98 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>주문 관리</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .button-container button {
+            margin-right: 8px;
+        }
+    </style>
+
 </head>
 <body>
-    <h1>Store Managing Page</h1>
-    <h1 th:text="${#authentication.name}"></h1>
+<div id="app">
+    <table>
+        <thead>
+        <tr>
+            <th>Order #</th>
+            <th>Menu</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="order in orders" :key="order.order.id">
+            <td>{{ order.order.id }}</td>
+            <td>
+                <ul>
+                    <li v-for="item in order.store_menus" :key="item.id">
+                        {{ item.name }} {{ item.amount }}
+                    </li>
+                </ul>
+            </td>
+            <td>{{ order.order.status }}</td>
+            <td class="button-container">
+                <button @click="acceptOrder(order)">Accept Order</button>
+                <button @click="startCooking(order)">Start Cooking</button>
+                <button @click="startDelivery(order)">Start Delivery</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    new Vue({
+        el: "#app",
+        data: {
+            orders: []
+        },
+        methods: {
+            acceptOrder(order) {
+                console.log("Accept Order:", order);
+            },
+            startCooking(order) {
+                console.log("Start Cooking:", order);
+            },
+            startDelivery(order) {
+                console.log("Start Delivery:", order);
+            },
+            pushData(order){
+                this.orders.unshift(order);
+            }
+        },
+        mounted() {
+            // SSE 연결
+            const url = "http://localhost:8081/api/sse/connect";
+            const eventSource = new EventSource(url);
+
+            eventSource.onopen = event => {
+                console.log("sse connection")
+            }
+
+            eventSource.onmessage = event => {
+                console.log("receive : "+event.data);
+                const data = JSON.parse(event.data);
+                this.pushData(data);
+            }
+        }
+    });
+</script>
 </body>
 </html>
